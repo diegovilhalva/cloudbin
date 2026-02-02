@@ -1,6 +1,6 @@
 
 
-import Home from "@/pages/Home"
+import RootError from "@/pages/error/Root"
 import { createBrowserRouter } from "react-router"
 
 
@@ -8,6 +8,6 @@ import { createBrowserRouter } from "react-router"
 export const router = createBrowserRouter([
     {
         path:"/",
-        Component:Home
-    }
+        ErrorBoundary:RootError
+    },
 ])
