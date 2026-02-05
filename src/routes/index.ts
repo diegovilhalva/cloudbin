@@ -6,6 +6,10 @@ import { createBrowserRouter } from "react-router"
 import { loginAction } from "./actions/login"
 import Signup from "@/pages/auth/Signup"
 import { signupAction } from "./actions/signup"
+import ForgotPassword from "@/pages/auth/ForgotPassword"
+import { forgotPasswordAction } from "./actions/forgotPassword"
+import ResetPassword from "@/pages/auth/ResetPassword"
+import { resetPasswordAction } from "./actions/resetPassword"
 
 
 
@@ -26,6 +30,16 @@ export const router = createBrowserRouter([
                 path: "signup",
                 Component: Signup,
                 action:signupAction,
+            },
+            {
+                path:"forgot-password",
+                Component:ForgotPassword,
+                action:forgotPasswordAction,
+            },
+            {
+                path:"reset-password",
+                Component:ResetPassword,
+                action:resetPasswordAction
             }
         ]
     }
