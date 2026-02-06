@@ -1,0 +1,68 @@
+import { SIDEBAR_LINKS } from "@/constants"
+import { Button } from "./ui/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu"
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarRail, useSidebar } from "./ui/sidebar"
+import { Logo } from "@/assets/logo"
+import { FolderPlus, PlusIcon, UploadIcon } from "lucide-react"
+import { useState, type ComponentProps } from "react"
+import { Link, useLocation } from "react-router"
+import { cn } from "@/lib/utils"
+import NavUser from "./NavUser"
+
+const AppSidebar = ({ ...props }: ComponentProps<typeof Sidebar>) => {
+    const { state } = useSidebar()
+    const location = useLocation()
+    const [openUpload, setOpenUpload] = useState(false)
+    const [openCreateFolder,setOpenCreateFolder] = useState(false)
+
+
+    return (
+        <>
+        <Sidebar {...props}>
+            <SidebarHeader>
+                <Link to={"/drive/home"}>
+                    <Logo variant="icon" className={cn(state === "collapsed" ? "size-8" :"size-10" )} />
+                </Link>
+            </SidebarHeader>
+            <SidebarContent className="px-2 mt-3">
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger>
+                                <Button size={state === "collapsed" ? 'icon' : 'default'} className={cn(state === "collapsed" && "size-8")}>
+                                    <PlusIcon /> {state === "expanded" && "New"}
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="start" side="right" className="w-50 bg-muted">
+                                <DropdownMenuItem>
+                                    <FolderPlus className="mr-2 size-4" />
+                                    Create Folder
+                                </DropdownMenuItem>
+                                 <DropdownMenuItem>
+                                    <UploadIcon className="mr-2 size-4" />
+                                    Upload File
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </SidebarMenuItem>
+                    {SIDEBAR_LINKS.map((item) => (
+                        <SidebarMenuItem key={item.title}>
+                            <SidebarMenuButton tooltip={item.title} isActive={location.pathname === item.url} asChild>
+                                <Link to={item.url} className="flex items-center gap-2">
+                                    {item.icon && <item.icon/>}
+                                    <span>{item.title}</span>
+                                </Link>
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                    ))}
+                </SidebarMenu>
+            </SidebarContent>
+            <SidebarFooter>
+                <NavUser />
+            </SidebarFooter>
+        </Sidebar>
+        </>
+    )
+}
+
+export default AppSidebar
