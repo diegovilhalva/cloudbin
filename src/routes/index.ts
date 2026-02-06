@@ -10,6 +10,8 @@ import ForgotPassword from "@/pages/auth/ForgotPassword"
 import { forgotPasswordAction } from "./actions/forgotPassword"
 import ResetPassword from "@/pages/auth/ResetPassword"
 import { resetPasswordAction } from "./actions/resetPassword"
+import AppLayout from "@/layouts/AppLayout"
+import { driveLoader } from "./loaders/drive"
 
 
 
@@ -42,5 +44,10 @@ export const router = createBrowserRouter([
                 action:resetPasswordAction
             }
         ]
+    },
+    {
+        path:"/drive",
+        Component:AppLayout,
+        loader:driveLoader
     }
 ])
