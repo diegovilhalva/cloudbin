@@ -4,10 +4,11 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "./ui/input"
 import { Button } from "./ui/button"
 import { Progress } from "./ui/progress"
-import { useRef, useState } from "react"
+import { useCallback, useRef, useState } from "react"
 import { toast } from "sonner"
 import { useLocation } from "react-router"
 import { UploadIcon } from "lucide-react"
+import { functions } from "@/lib/appwrite"
 
 type Props = {
     open: boolean
@@ -22,6 +23,28 @@ const UploadFile = ({ open, onOpenChange }: Props) => {
     const fileInputRef = useRef<HTMLInputElement>(null)
     const abortController = new AbortController()
     const location = useLocation()
+
+    const getAuthData = useCallback(async () => {
+        try {
+            const response = await functions.createExecution({
+                functionId:import.meta.env.VITE_APPWRITE_FN_ID,
+                xpath:"/auth",
+            })
+
+            if (response.responseStatusCode !== 200) {
+                throw new Error(`Request failed with status ${response.status}: ${response.errors}`)
+            }
+            
+        } catch (error) {
+            console.log(error)
+            throw new Error("Authentication request failed")
+        }
+    },[])
+
+
+const handleUpload = useCallback(() => {
+    
+},[])
 
 
     return (
