@@ -27,24 +27,67 @@ const UploadFile = ({ open, onOpenChange }: Props) => {
     const getAuthData = useCallback(async () => {
         try {
             const response = await functions.createExecution({
-                functionId:import.meta.env.VITE_APPWRITE_FN_ID,
-                xpath:"/auth",
+                functionId: import.meta.env.VITE_APPWRITE_FN_ID,
+                xpath: "/auth",
             })
 
             if (response.responseStatusCode !== 200) {
                 throw new Error(`Request failed with status ${response.status}: ${response.errors}`)
             }
-            
+            const data = JSON.parse(response.responseBody)
+            return data
+
         } catch (error) {
             console.log(error)
             throw new Error("Authentication request failed")
         }
-    },[])
+    }, [])
 
-
-const handleUpload = useCallback(() => {
     
-},[])
+    const handleUpload = useCallback(async () => {
+        const file = fileInputRef.current?.files?.[0]
+        if (!file) return toast.error("Please select a file to upload")
+        const pathname = location.pathname
+        const folderPath = location.pathname.startsWith("/drive/folders/") ? pathname.split("/folders")[1] : null
+
+        try {
+            setIsUploading(true)
+            const { signature, expire, token, publicKey } = await getAuthData()
+
+            await upload({
+                file,
+                fileName:file.name,
+                expire,
+                token,
+                signature,
+                publicKey,
+                onProgress:(event) => {
+                    setProgress(Math.round((event.loaded / event.total) * 100))
+                },
+                abortSignal:abortController.signal
+            })
+            toast.success("File uploaded sucessfully") 
+
+
+            if (fileInputRef.current) fileInputRef.current.value = "";
+            setProgress(0)
+            onOpenChange(false)
+        } catch (error) {
+            if (error instanceof ImageKitAbortError) {
+                toast.warning(`Upload abort: ${error.message}`)
+            } else if (error instanceof ImageKitInvalidRequestError) {
+                toast.error(`Inavalid request: ${error?.message}`)
+            } else if (error instanceof ImageKitUploadNetworkError) {
+                toast.error(`Network error: ${error.message}`)
+            } else if (error instanceof ImageKitServerError) {
+                toast.error(`Server error: ${error.message}`)
+            } else {
+                toast.error("Unexpected upload error")
+            }
+        } finally {
+            setIsUploading(false)
+        }
+    }, [location.pathname])
 
 
     return (
@@ -60,7 +103,7 @@ const handleUpload = useCallback(() => {
                     </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4 py-4">
-                    <Input type="file" ref={fileInputRef}  className="cursor-pointer" disabled={isUploading} />
+                    <Input type="file" ref={fileInputRef} className="cursor-pointer" disabled={isUploading} />
                     {progress > 0 && (
                         <div className="space-y-1">
                             <div className="flex justify-between text-sm text-muted-foreground">
@@ -73,11 +116,11 @@ const handleUpload = useCallback(() => {
                 </div>
                 <DialogFooter className="flex flex-col gap-2">
                     {!isUploading ? (
-                        <Button onClick={() => {}} className="w-full flex items-center justify-center gap-2">
+                        <Button onClick={handleUpload} className="w-full flex items-center justify-center gap-2">
                             Upload File
                         </Button>
-                    ):(
-                        <Button variant="secondary" size="sm" className="w-full  flex items-center justify-center gap-2" onClick={() => {}}>
+                    ) : (
+                        <Button variant="secondary" size="sm" className="w-full  flex items-center justify-center gap-2" onClick={() => { }}>
                             Cancel
                         </Button>
                     )}
