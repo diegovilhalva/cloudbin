@@ -9,6 +9,7 @@ import { Link, useLocation } from "react-router"
 import { cn } from "@/lib/utils"
 import NavUser from "./NavUser"
 import UploadFile from "./UploadFile"
+import NewFolder from "./NewFolder"
 
 const AppSidebar = ({ ...props }: ComponentProps<typeof Sidebar>) => {
     const { state } = useSidebar()
@@ -64,6 +65,7 @@ const AppSidebar = ({ ...props }: ComponentProps<typeof Sidebar>) => {
                 <SidebarRail/>
             </Sidebar>
             <UploadFile open={openUpload} onOpenChange={setOpenUpload} />
+            <NewFolder open={openCreateFolder} onOpenChange={setOpenCreateFolder} />
         </>
     )
 }
