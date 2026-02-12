@@ -9,6 +9,7 @@ import { toast } from "sonner"
 import { useLocation } from "react-router"
 import { UploadIcon } from "lucide-react"
 import { functions } from "@/lib/appwrite"
+import { useFolder } from "@/contexts/FolderContext"
 
 type Props = {
     open: boolean
@@ -23,6 +24,8 @@ const UploadFile = ({ open, onOpenChange }: Props) => {
     const fileInputRef = useRef<HTMLInputElement>(null)
     const abortController = new AbortController()
     const location = useLocation()
+
+    const currentFolderName = useFolder()
 
     const getAuthData = useCallback(async () => {
         try {
@@ -43,7 +46,7 @@ const UploadFile = ({ open, onOpenChange }: Props) => {
         }
     }, [])
 
-    
+
     const handleUpload = useCallback(async () => {
         const file = fileInputRef.current?.files?.[0]
         if (!file) return toast.error("Please select a file to upload")
@@ -56,17 +59,18 @@ const UploadFile = ({ open, onOpenChange }: Props) => {
 
             await upload({
                 file,
-                fileName:file.name,
+                fileName: file.name,
+                folder: folderPath ? `/${currentFolderName}/${folderPath}` : `/${currentFolderName}`,
                 expire,
                 token,
                 signature,
                 publicKey,
-                onProgress:(event) => {
+                onProgress: (event) => {
                     setProgress(Math.round((event.loaded / event.total) * 100))
                 },
-                abortSignal:abortController.signal
+                abortSignal: abortController.signal
             })
-            toast.success("File uploaded sucessfully") 
+            toast.success("File uploaded sucessfully")
 
 
             if (fileInputRef.current) fileInputRef.current.value = "";
@@ -87,7 +91,7 @@ const UploadFile = ({ open, onOpenChange }: Props) => {
         } finally {
             setIsUploading(false)
         }
-    }, [location.pathname])
+    }, [location.pathname, abortController.signal, currentFolderName, getAuthData, onOpenChange])
 
 
     return (

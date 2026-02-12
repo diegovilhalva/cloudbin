@@ -12,6 +12,7 @@ import ResetPassword from "@/pages/auth/ResetPassword"
 import { resetPasswordAction } from "./actions/resetPassword"
 import AppLayout from "@/layouts/AppLayout"
 import { driveLoader } from "./loaders/drive"
+import Home from "@/pages/drive/Home"
 
 
 
@@ -48,6 +49,12 @@ export const router = createBrowserRouter([
     {
         path:"/drive",
         Component:AppLayout,
-        loader:driveLoader
+        loader:driveLoader,
+        children:[
+            {
+                path:"home",
+                Component:Home
+            }
+        ]
     }
 ])
