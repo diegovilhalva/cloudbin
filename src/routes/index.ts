@@ -13,6 +13,7 @@ import { resetPasswordAction } from "./actions/resetPassword"
 import AppLayout from "@/layouts/AppLayout"
 import { driveLoader } from "./loaders/drive"
 import Home from "@/pages/drive/Home"
+import { driveActions } from "./actions/driveActions"
 
 
 
@@ -50,10 +51,12 @@ export const router = createBrowserRouter([
         path:"/drive",
         Component:AppLayout,
         loader:driveLoader,
+        action:driveActions,
         children:[
             {
                 path:"home",
-                Component:Home
+                Component:Home,
+                //loader:
             }
         ]
     }
