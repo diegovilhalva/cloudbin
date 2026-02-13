@@ -14,6 +14,7 @@ import AppLayout from "@/layouts/AppLayout"
 import { driveLoader } from "./loaders/drive"
 import Home from "@/pages/drive/Home"
 import { driveActions } from "./actions/driveActions"
+import { driveFileLoader } from "./loaders/fileLoader"
 
 
 
@@ -56,7 +57,7 @@ export const router = createBrowserRouter([
             {
                 path:"home",
                 Component:Home,
-                //loader:
+                loader:driveFileLoader
             }
         ]
     }
