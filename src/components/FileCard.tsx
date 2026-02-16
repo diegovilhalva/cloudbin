@@ -1,7 +1,10 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import { Card, CardHeader, CardTitle } from './ui/card'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card'
 import type { File } from '@/types/all-types'
 import { fileIcons } from '@/assets/icons/file'
+import FileMenu from './FileMenu'
+import { Image } from '@imagekit/react'
+import { formatCustomDate } from '@/lib/utils'
 
 const FileCard = ({ file }: { file: File }) => {
     const [detailOpen, setDetailOpen] = useState(false)
@@ -30,9 +33,18 @@ const FileCard = ({ file }: { file: File }) => {
                                 {file.name.length > 18 ? "..." : ""}
                             </span>
                         </span>
-                        
+                        <FileMenu file={file} />
                     </CardTitle>
                 </CardHeader>
+                <CardContent className='grow cursor-pointer' onClick={() => setDetailOpen(true)}>
+                <Image urlEndpoint={import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT}  src={thumbNail} width={500} height={500} alt={file.name}  loading="lazy" className="w-full -full object-cover rounded-lg" />
+                </CardContent>
+                <CardFooter>
+                    <p>
+                        Last updated:{"   "}
+                        {file.updatedAt ? formatCustomDate(file.updatedAt) : "Unknown"}
+                    </p>
+                </CardFooter>
             </Card>
         </>
     )
