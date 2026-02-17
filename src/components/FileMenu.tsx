@@ -2,7 +2,7 @@ import type { File } from "@/types/all-types"
 import { useState } from "react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "./ui/dropdown-menu"
 import { CopyIcon, DownloadIcon, EditIcon, EllipsisVerticalIcon, FolderOpenIcon, InfoIcon, ShareIcon, Trash2Icon } from "lucide-react"
-import { downloadFile } from "@/lib/utils"
+import { copyToClipboard, downloadFile } from "@/lib/utils"
 import RenameFile from "./RenameFile"
 
 
@@ -40,7 +40,7 @@ const FileMenu = ({ file }: { file: File }) => {
                         </DropdownMenuSubTrigger>
                         <DropdownMenuPortal>
                             <DropdownMenuSubContent>
-                                <DropdownMenuItem>
+                                <DropdownMenuItem onClick={async () => await copyToClipboard(file.url)}>
                                     <CopyIcon />
                                     Copy Link
                                 </DropdownMenuItem>

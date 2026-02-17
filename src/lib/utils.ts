@@ -71,3 +71,13 @@ export async function downloadFile(url:string,fileName:string){
     console.log("Download failed",error)
   }
 } 
+
+export async function copyToClipboard(url:string) {
+  try {
+    await navigator.clipboard.writeText(url)
+    return true
+  } catch (error) {
+    console.log("Failed to copy: ",error)
+    return false
+  }
+}
