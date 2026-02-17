@@ -3,6 +3,7 @@ import { useState } from "react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "./ui/dropdown-menu"
 import { CopyIcon, DownloadIcon, EditIcon, EllipsisVerticalIcon, FolderOpenIcon, InfoIcon, ShareIcon, Trash2Icon } from "lucide-react"
 import { downloadFile } from "@/lib/utils"
+import RenameFile from "./RenameFile"
 
 
 const FileMenu = ({ file }: { file: File }) => {
@@ -59,6 +60,14 @@ const FileMenu = ({ file }: { file: File }) => {
 
                 </DropdownMenuContent>
             </DropdownMenu>
+            <RenameFile
+
+            open={renameOpen} 
+            onOpenChange={setRenameOpen}
+            fileName={file.name}
+            filePath={file.filePath} 
+
+            />
         </>
     )
 }

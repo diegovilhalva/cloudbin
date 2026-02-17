@@ -1,3 +1,4 @@
+import RenameFile from "@/components/RenameFile"
 import { getCurrentUserFolder } from "@/lib/appwrite"
 import axios from "axios"
 import type { AxiosRequestConfig } from "axios"
@@ -12,11 +13,11 @@ export const createFolder = async (data) => {
         headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization:`Basic ${apiKey}`
+            Authorization: `Basic ${apiKey}`
         },
-        data:{
-            folderName:data.folderName,
-            parentFolderPath:`${data?.currentFolderName ?? ""}/${data?.parentFolderPath ?? "/"}`,
+        data: {
+            folderName: data.folderName,
+            parentFolderPath: `${data?.currentFolderName ?? ""}/${data?.parentFolderPath ?? "/"}`,
 
         }
     }
@@ -28,18 +29,46 @@ export const createFolder = async (data) => {
         return { ok: false, error }
     }
 }
+export const renameFile = async (data) => {
+    const options: AxiosRequestConfig = {
+        method: "PUT",
+        url: `${import.meta.env.VITE_IMAGEKIT_API_ENDPOINT}/rename`,
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Basic ${apiKey}`
+        },
+        data: {
+            filePath: data?.filePath,
+            newFileName:data?.newName,
+            purgeCache:true,
 
-export const driveActions: ActionFunction = async({request}) => {
+        }
+    }
+
+    try {
+        await axios.request(options)
+        return { ok: true, message: "File renamed successfully" }
+    } catch (error) {
+        return { ok: false, error }
+    }
+}
+
+export const driveActions: ActionFunction = async ({ request }) => {
     const currentFolderName = await getCurrentUserFolder()
 
     const data = (await request.json()) as {
-        filePath?:string
-        newName?:string
-        folderName?:string
-        parentFolderPath?:string
+        filePath?: string
+        newName?: string
+        folderName?: string
+        parentFolderPath?: string
     }
 
     if (request.method === "POST") {
-        return await createFolder({...data,currentFolderName})
+        return await createFolder({ ...data, currentFolderName })
+    }
+
+    if (request.method === "PUT") {
+        return await renameFile({ ...data, currentFolderName })
     }
 }
