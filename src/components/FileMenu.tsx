@@ -4,6 +4,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuPortal
 import { CopyIcon, DownloadIcon, EditIcon, EllipsisVerticalIcon, FolderOpenIcon, InfoIcon, ShareIcon, Trash2Icon } from "lucide-react"
 import { copyToClipboard, downloadFile } from "@/lib/utils"
 import RenameFile from "./RenameFile"
+import FileInformation from "./FileInformation"
 
 
 const FileMenu = ({ file }: { file: File }) => {
@@ -68,6 +69,10 @@ const FileMenu = ({ file }: { file: File }) => {
             filePath={file.filePath} 
 
             />
+            <FileInformation 
+            open={infoOpen}
+            onOpenChange={setInfoOpen}
+            file={file} />
         </>
     )
 }

@@ -1,0 +1,26 @@
+import { formatDate } from '@/lib/formatDate'
+import type { File } from '@/types/all-types'
+
+const FileInfo = ({ file }: { file: File }) => {
+    return (
+        <div className="space-y-2 text-sm">
+            <p>
+                <strong>Name:</strong> {file.name}
+            </p>
+            <p>
+                <strong>Type:</strong> {file.mime}
+            </p>
+            <p>
+                <strong>Size:</strong> {(file.size / 1024).toFixed(2)} KB
+            </p>
+            <p>
+                <strong>Created:</strong> {formatDate(file.createdAt)}
+            </p>
+            <p>
+                <strong>Updated:</strong> {formatDate(file.updatedAt)}
+            </p>
+        </div>
+    )
+}
+
+export default FileInfo
