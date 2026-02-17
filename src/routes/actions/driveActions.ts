@@ -54,6 +54,25 @@ export const renameFile = async (data) => {
     }
 }
 
+export const deleteFile = async (data)=>{
+     const options: AxiosRequestConfig = {
+        method: "DELETE",
+        url: `${import.meta.env.VITE_IMAGEKIT_API_ENDPOINT}/${data.fileId}`,
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Basic ${apiKey}`
+        },
+    }
+
+    try {
+        await axios.request(options)
+        return { ok: true, message: "File deletd successfully" }
+    } catch (error) {
+        return { ok: false, error }
+    }
+}
+
 export const driveActions: ActionFunction = async ({ request }) => {
     const currentFolderName = await getCurrentUserFolder()
 
@@ -70,5 +89,9 @@ export const driveActions: ActionFunction = async ({ request }) => {
 
     if (request.method === "PUT") {
         return await renameFile({ ...data, currentFolderName })
+    }
+
+    if (request.method === "DELETE") {
+        return await deleteFile({...data,currentFolderName})
     }
 }
