@@ -5,6 +5,7 @@ import { CopyIcon, DownloadIcon, EditIcon, EllipsisVerticalIcon, FolderOpenIcon,
 import { copyToClipboard, downloadFile } from "@/lib/utils"
 import RenameFile from "./RenameFile"
 import FileInformation from "./FileInformation"
+import DeleteFile from "./DeleteFile"
 
 
 const FileMenu = ({ file }: { file: File }) => {
@@ -54,7 +55,10 @@ const FileMenu = ({ file }: { file: File }) => {
                         File Info
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                     <DropdownMenuItem variant="destructive" className="cursor-pointer" onClick={() => setDeleteOpen(true)}>
+
+                    
+                     <DropdownMenuItem variant="destructive" className="cursor-pointer" 
+                     onClick={() => setDeleteOpen(true)}>
                         <Trash2Icon />
                         Delete File
                     </DropdownMenuItem>
@@ -73,6 +77,15 @@ const FileMenu = ({ file }: { file: File }) => {
             open={infoOpen}
             onOpenChange={setInfoOpen}
             file={file} />
+
+
+            <DeleteFile
+                open={deleteOpen}
+                onOpenChange={setDeleteOpen}
+                fileId={file.fileId}
+                fileUrl={file.url}
+
+            />
         </>
     )
 }
