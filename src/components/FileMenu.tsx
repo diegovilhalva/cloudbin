@@ -6,6 +6,7 @@ import { copyToClipboard, downloadFile } from "@/lib/utils"
 import RenameFile from "./RenameFile"
 import FileInformation from "./FileInformation"
 import DeleteFile from "./DeleteFile"
+import FileDetails from "./FileDetails"
 
 
 const FileMenu = ({ file }: { file: File }) => {
@@ -86,6 +87,13 @@ const FileMenu = ({ file }: { file: File }) => {
                 fileUrl={file.url}
 
             />
+
+            <FileDetails 
+            open={detailsOpen}
+            onOpenChange={setDetailsOpen}
+            file={file}
+
+             />
         </>
     )
 }
