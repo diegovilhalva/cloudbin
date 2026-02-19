@@ -5,6 +5,7 @@ import { fileIcons } from '@/assets/icons/file'
 import FileMenu from './FileMenu'
 import { Image } from '@imagekit/react'
 import { formatCustomDate } from '@/lib/utils'
+import FileDetails from './FileDetails'
 
 const FileCard = ({ file }: { file: File }) => {
     const [detailOpen, setDetailOpen] = useState(false)
@@ -37,7 +38,7 @@ const FileCard = ({ file }: { file: File }) => {
                     </CardTitle>
                 </CardHeader>
                 <CardContent className='grow cursor-pointer' onClick={() => setDetailOpen(true)}>
-                <Image urlEndpoint={import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT}  src={thumbNail} width={500} height={500} alt={file.name}  loading="lazy" className="w-full -full object-cover rounded-lg" />
+                <Image urlEndpoint={import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT}  src={thumbNail} width={500} height={500} alt={file.name}  loading="lazy" className="w-full h-full object-cover rounded-lg" />
                 </CardContent>
                 <CardFooter>
                     <p>
@@ -46,6 +47,7 @@ const FileCard = ({ file }: { file: File }) => {
                     </p>
                 </CardFooter>
             </Card>
+            <FileDetails open={detailOpen} file={file} onOpenChange={setDetailOpen}  />
         </>
     )
 }

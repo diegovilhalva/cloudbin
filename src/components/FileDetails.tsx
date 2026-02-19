@@ -1,8 +1,10 @@
 import type { FileDetailsType } from "@/types/all-types"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./ui/dialog"
-import { useState } from "react"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "./ui/dialog"
+import { useCallback, useState } from "react"
 import FilePreview from "./FilePreview"
 import ImgPreviewSidebar from "./ImgPreviewSidebar"
+import { Separator } from "./ui/separator"
+import FileInfo from "./FileInfo"
 
 
 const FileDetails = ({ open, onOpenChange, file }: FileDetailsType) => {
@@ -17,6 +19,24 @@ const FileDetails = ({ open, onOpenChange, file }: FileDetailsType) => {
 
     const transformQuery = selectedTransforms.length > 0 ? `tr=${selectedTransforms.join(":")}` : ""
 
+    const handleToggle = useCallback((id: string, promptText?: string) => {
+        setLoading(true)
+
+        const transformId = promptText ? `${id}-prompt-${promptText.trim().replace(/\s+/g, "_")}`
+            : id
+
+        setSelectedtransforms((prev) => prev.includes(transformId) ? prev.filter((item) => item !== transformId) : [...prev, transformId])
+
+        if (promptText) {
+            setPrompts((prev) => ({ ...prev, [id]: "" }))
+        }
+    }, [])
+
+
+    const handlePromptChange = useCallback((id: string, value: string) => {
+        setPrompts((prev) => ({ ...prev, [id]: value }))
+    }, [])
+
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="w-screen h-screen max-w-none rounded-none sm:rounded-lg sm:max-w-6xl overflow-auto">
@@ -28,22 +48,29 @@ const FileDetails = ({ open, onOpenChange, file }: FileDetailsType) => {
                 </DialogHeader>
                 <div className="flex">
                     <FilePreview file={file} isVideo={isVideo} thumbnail={thumbnail} transformQuery={transformQuery} loading={loading} setLoading={setLoading} isImage={isImage} />
-                    <div className="w-80 border-lg bg-background p-4 flex flex-col">
-                     {/*   {isImage  ? (
-                            <ImgPreviewSidebar 
-                            file={file} 
-                            selectedTransforms={selectedTransforms}
-                            prompts={prompts}
-                            handleToggle={handletoggle}
-                            handlePromptChange={handlePromptChange}
+                    <div className="w-80 border-l bg-background p-4 flex flex-col">
+                        {isImage ? (
+                            <ImgPreviewSidebar
+                                file={file}
+                                selectedTransforms={selectedTransforms}
+                                prompts={prompts}
+                                handleToggle={handleToggle}
+                                handlePromptChange={handlePromptChange}
                             />
-                        ):(
-                            <div className="border">
-
+                        ) : (
+                            <div className="border rounded-lg p-5 bg-muted/40">
+                                <h3 className="font-semibold text-foreground mb-2">
+                                    File Information
+                                </h3>
+                                <Separator className="mt-2 mb-4" />
+                                <FileInfo file={file} />
                             </div>
-                        )}*/}
+                        )}
                     </div>
                 </div>
+                <DialogFooter className="border-t pt-2">
+
+                </DialogFooter>
             </DialogContent>
         </Dialog>
     )
