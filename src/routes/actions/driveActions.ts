@@ -1,4 +1,4 @@
-import RenameFile from "@/components/RenameFile"
+
 import { getCurrentUserFolder } from "@/lib/appwrite"
 import axios from "axios"
 import type { AxiosRequestConfig } from "axios"
