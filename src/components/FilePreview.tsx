@@ -5,7 +5,7 @@ import { Image, Video } from "@imagekit/react"
 const FilePreview = ({ file, isVideo, thumbnail, transformQuery, loading, setLoading, isImage }: FilePreviewType) => {
   
     return (
-        <div className="flex-1 flex items-center  justify-center bg-muted rounded-lg  relative">
+        <div className="flex  sm:flex-1   items-center  justify-center bg-muted rounded-lg  relative">
             {loading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/40 z-10 rounded-lg ">
                     <p className="text-white text-lg font-medium ">Processing...</p>
