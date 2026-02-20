@@ -15,6 +15,8 @@ import { driveLoader } from "./loaders/drive"
 import Home from "@/pages/drive/Home"
 import { driveActions } from "./actions/driveActions"
 import { driveFileLoader } from "./loaders/fileLoader"
+import MyDrive from "@/components/MyDrive"
+import Recent from "@/components/Recent"
 
 
 
@@ -57,6 +59,16 @@ export const router = createBrowserRouter([
             {
                 path:"home",
                 Component:Home,
+                loader:driveFileLoader
+            },
+            {
+                path:"my-drive",
+                Component:MyDrive,
+                loader:driveFileLoader
+            },
+            {
+                path:"recent",
+                Component:Recent,
                 loader:driveFileLoader
             }
         ]

@@ -46,9 +46,9 @@ const FileDetails = ({ open, onOpenChange, file }: FileDetailsType) => {
                         <strong>{file.name}</strong>
                     </DialogDescription>
                 </DialogHeader>
-                <div className="flex">
+                <div className="flex flex-col md:flex-row ">
                     <FilePreview file={file} isVideo={isVideo} thumbnail={thumbnail} transformQuery={transformQuery} loading={loading} setLoading={setLoading} isImage={isImage} />
-                    <div className="w-80 border-l bg-background p-4 flex flex-col">
+                    <div className="w-80 border-l bg-background p-4 flex flex-col ">
                         {isImage ? (
                             <ImgPreviewSidebar
                                 file={file}
