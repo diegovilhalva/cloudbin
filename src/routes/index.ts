@@ -17,6 +17,8 @@ import { driveActions } from "./actions/driveActions"
 import { driveFileLoader } from "./loaders/fileLoader"
 import MyDrive from "@/components/MyDrive"
 import Recent from "@/components/Recent"
+import { driveFolderLoader } from "./loaders/folderLoader"
+import FolderPreview from "@/pages/drive/FolderPreview"
 
 
 
@@ -70,6 +72,11 @@ export const router = createBrowserRouter([
                 path:"recent",
                 Component:Recent,
                 loader:driveFileLoader
+            },
+            {
+                path:"folders/:folderName",
+                Component:FolderPreview,
+                loader:driveFolderLoader
             }
         ]
     }
