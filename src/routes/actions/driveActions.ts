@@ -6,7 +6,23 @@ import type { ActionFunction } from "react-router"
 
 const apiKey = btoa(`${import.meta.env.VITE_IMAGEKIT_API_KEY}:`)
 
-export const createFolder = async (data) => {
+type CreateFolderInput = {
+  folderName: string
+  parentFolderPath?: string
+  currentFolderName: string
+}
+
+type RenameFileInput = {
+  filePath: string
+  newName: string
+}
+
+type DeleteFileInput = {
+  fileId: string
+  
+}
+
+export const createFolder = async (data:CreateFolderInput) => {
     const options: AxiosRequestConfig = {
         method: "POST",
         url: "https://api.imagekit.io/v1/folder",
@@ -29,7 +45,7 @@ export const createFolder = async (data) => {
         return { ok: false, error }
     }
 }
-export const renameFile = async (data) => {
+export const renameFile = async (data:RenameFileInput) => {
     const options: AxiosRequestConfig = {
         method: "PUT",
         url: `${import.meta.env.VITE_IMAGEKIT_API_ENDPOINT}/rename`,
@@ -54,7 +70,7 @@ export const renameFile = async (data) => {
     }
 }
 
-export const deleteFile = async (data)=>{
+export const deleteFile = async (data:DeleteFileInput)=>{
      const options: AxiosRequestConfig = {
         method: "DELETE",
         url: `${import.meta.env.VITE_IMAGEKIT_API_ENDPOINT}/${data.fileId}`,
@@ -74,24 +90,46 @@ export const deleteFile = async (data)=>{
 }
 
 export const driveActions: ActionFunction = async ({ request }) => {
-    const currentFolderName = await getCurrentUserFolder()
+  const currentFolderName = await getCurrentUserFolder()
 
-    const data = (await request.json()) as {
-        filePath?: string
-        newName?: string
-        folderName?: string
-        parentFolderPath?: string
+  if (!currentFolderName) {
+    return { ok: false, error: "User folder not found" }
+  }
+
+  const body = await request.json()
+
+  if (request.method === "POST") {
+    if (!body.folderName) {
+      return { ok: false, error: "Folder name is required" }
     }
 
-    if (request.method === "POST") {
-        return await createFolder({ ...data, currentFolderName })
+    return await createFolder({
+      folderName: body.folderName,
+      parentFolderPath: body.parentFolderPath,
+      currentFolderName, // agora é string garantido
+    })
+  }
+
+  if (request.method === "PUT") {
+    if (!body.filePath || !body.newName) {
+      return { ok: false, error: "Missing rename data" }
     }
 
-    if (request.method === "PUT") {
-        return await renameFile({ ...data, currentFolderName })
+    return await renameFile({
+      filePath: body.filePath,
+      newName: body.newName,
+    })
+  }
+
+  if (request.method === "DELETE") {
+    if (!body.fileId) {
+      return { ok: false, error: "File id required" }
     }
 
-    if (request.method === "DELETE") {
-        return await deleteFile({...data,currentFolderName})
-    }
+    return await deleteFile({
+      fileId: body.fileId,
+    })
+  }
+
+  return { ok: false, error: "Invalid method" }
 }

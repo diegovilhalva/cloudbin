@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import  { useCallback, useMemo, useState } from 'react'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card'
 import type { File } from '@/types/all-types'
 import { fileIcons } from '@/assets/icons/file'
