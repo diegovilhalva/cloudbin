@@ -9,7 +9,7 @@ const apiKey = btoa(`${import.meta.env.VITE_IMAGEKIT_API_KEY}:`)
 type CreateFolderInput = {
   folderName: string
   parentFolderPath?: string
-  currentFolderName: string
+  currentFolderName?: string
 }
 
 type RenameFileInput = {
@@ -106,7 +106,7 @@ export const driveActions: ActionFunction = async ({ request }) => {
     return await createFolder({
       folderName: body.folderName,
       parentFolderPath: body.parentFolderPath,
-      currentFolderName, // agora é string garantido
+      currentFolderName, 
     })
   }
 
