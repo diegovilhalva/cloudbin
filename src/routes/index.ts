@@ -2,7 +2,7 @@
 
 import Login from "@/pages/auth/Login"
 import RootError from "@/pages/error/Root"
-import { createBrowserRouter } from "react-router"
+import { createBrowserRouter, redirect } from "react-router"
 import { loginAction } from "./actions/login"
 import Signup from "@/pages/auth/Signup"
 import { signupAction } from "./actions/signup"
@@ -25,6 +25,7 @@ import FolderPreview from "@/pages/drive/FolderPreview"
 export const router = createBrowserRouter([
     {
         path: "/",
+        loader: () => redirect("/drive/home"),
         ErrorBoundary: RootError
     },
     {
@@ -38,45 +39,45 @@ export const router = createBrowserRouter([
             {
                 path: "signup",
                 Component: Signup,
-                action:signupAction,
+                action: signupAction,
             },
             {
-                path:"forgot-password",
-                Component:ForgotPassword,
-                action:forgotPasswordAction,
+                path: "forgot-password",
+                Component: ForgotPassword,
+                action: forgotPasswordAction,
             },
             {
-                path:"reset-password",
-                Component:ResetPassword,
-                action:resetPasswordAction
+                path: "reset-password",
+                Component: ResetPassword,
+                action: resetPasswordAction
             }
         ]
     },
     {
-        path:"/drive",
-        Component:AppLayout,
-        loader:driveLoader,
-        action:driveActions,
-        children:[
+        path: "/drive",
+        Component: AppLayout,
+        loader: driveLoader,
+        action: driveActions,
+        children: [
             {
-                path:"home",
-                Component:Home,
-                loader:driveFileLoader
+                path: "home",
+                Component: Home,
+                loader: driveFileLoader
             },
             {
-                path:"my-drive",
-                Component:MyDrive,
-                loader:driveFileLoader
+                path: "my-drive",
+                Component: MyDrive,
+                loader: driveFileLoader
             },
             {
-                path:"recent",
-                Component:Recent,
-                loader:driveFileLoader
+                path: "recent",
+                Component: Recent,
+                loader: driveFileLoader
             },
             {
-                path:"folders/:folderName",
-                Component:FolderPreview,
-                loader:driveFolderLoader
+                path: "folders/:folderName",
+                Component: FolderPreview,
+                loader: driveFolderLoader
             }
         ]
     }
