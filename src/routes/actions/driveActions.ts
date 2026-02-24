@@ -1,94 +1,46 @@
 
 import { getCurrentUserFolder } from "@/lib/appwrite"
-import axios from "axios"
-import type { AxiosRequestConfig } from "axios"
+
 import type { ActionFunction } from "react-router"
 
-const apiKey = btoa(`${import.meta.env.VITE_IMAGEKIT_API_KEY}:`)
 
-type CreateFolderInput = {
+
+export const createFolder = async (data: {
   folderName: string
   parentFolderPath?: string
-  currentFolderName?: string
+  userId: string
+}) => {
+  const response = await fetch("/api/imagekit?action=create-folder", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  })
+
+  return response.json()
 }
 
-type RenameFileInput = {
+export const renameFile = async (data: {
   filePath: string
   newName: string
+}) => {
+  const response = await fetch("/api/imagekit?action=rename-file", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  })
+
+  return response.json()
 }
 
-type DeleteFileInput = {
-  fileId: string
-  
+export const deleteFile = async (fileId: string) => {
+  const response = await fetch("/api/imagekit?action=delete-file", {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ fileId }),
+  })
+
+  return response.json()
 }
-
-export const createFolder = async (data:CreateFolderInput) => {
-    const options: AxiosRequestConfig = {
-        method: "POST",
-        url: "https://api.imagekit.io/v1/folder",
-        headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Basic ${apiKey}`
-        },
-        data: {
-            folderName: data.folderName,
-            parentFolderPath: `${data?.currentFolderName ?? ""}/${data?.parentFolderPath ?? "/"}`,
-
-        }
-    }
-
-    try {
-        await axios.request(options)
-        return { ok: true, message: "Folder created successfully" }
-    } catch (error) {
-        return { ok: false, error }
-    }
-}
-export const renameFile = async (data:RenameFileInput) => {
-    const options: AxiosRequestConfig = {
-        method: "PUT",
-        url: `${import.meta.env.VITE_IMAGEKIT_API_ENDPOINT}/rename`,
-        headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Basic ${apiKey}`
-        },
-        data: {
-            filePath: data?.filePath,
-            newFileName:data?.newName,
-            purgeCache:true,
-
-        }
-    }
-
-    try {
-        await axios.request(options)
-        return { ok: true, message: "File renamed successfully" }
-    } catch (error) {
-        return { ok: false, error }
-    }
-}
-
-export const deleteFile = async (data:DeleteFileInput)=>{
-     const options: AxiosRequestConfig = {
-        method: "DELETE",
-        url: `${import.meta.env.VITE_IMAGEKIT_API_ENDPOINT}/${data.fileId}`,
-        headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Basic ${apiKey}`
-        },
-    }
-
-    try {
-        await axios.request(options)
-        return { ok: true, message: "File deletd successfully" }
-    } catch (error) {
-        return { ok: false, error }
-    }
-}
-
 export const driveActions: ActionFunction = async ({ request }) => {
   const currentFolderName = await getCurrentUserFolder()
 
@@ -106,7 +58,7 @@ export const driveActions: ActionFunction = async ({ request }) => {
     return await createFolder({
       folderName: body.folderName,
       parentFolderPath: body.parentFolderPath,
-      currentFolderName, 
+      userId: currentFolderName,
     })
   }
 
@@ -126,9 +78,7 @@ export const driveActions: ActionFunction = async ({ request }) => {
       return { ok: false, error: "File id required" }
     }
 
-    return await deleteFile({
-      fileId: body.fileId,
-    })
+    return await deleteFile(body.fileId)
   }
 
   return { ok: false, error: "Invalid method" }

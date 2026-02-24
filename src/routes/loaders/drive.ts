@@ -10,7 +10,11 @@ export const driveLoader: LoaderFunction = async () => {
       const currentSession = await account.getSession({ sessionId: 'current' })
       const user = await account.get()
       const folderName = user.$id
-      await createFolder({ folderName, parentFolderPath: '/' })
+      await createFolder({
+         folderName,
+         parentFolderPath: '/',
+         userId: user.$id,
+      })
       return { currentSession, user }
    } catch (error) {
       if (error instanceof AppwriteException) {
