@@ -16,7 +16,8 @@ const getFilesByFolder = async (path: string) => {
         method: "GET",
         url: import.meta.env.VITE_IMAGEKIT_API_ENDPOINT,
         params: {
-            path: `/${folderName}/${path}`
+            path: `/${folderName}/${path}`,
+            type:"file"
         },
         headers: {
             Accept: "application/json",
@@ -28,6 +29,8 @@ const getFilesByFolder = async (path: string) => {
     try {
         const  {data}  = await axios.request(options)
         return data
+        console.log(data)
+        
     } catch (error) {
         console.log(error)
         throw error
@@ -39,7 +42,7 @@ export const driveFolderLoader: LoaderFunction = async ({ params }) => {
         const folderName = params.folderName
 
         if (!folderName) {
-            throw new Error("Folder namis is reuired")
+            throw new Error("Folder namis is required")
         }
 
         const files = await getFilesByFolder(folderName)
