@@ -7,6 +7,7 @@ import RenameFile from "./RenameFile"
 import FileInformation from "./FileInformation"
 import DeleteFile from "./DeleteFile"
 import FileDetails from "./FileDetails"
+import { useRevalidator } from "react-router"
 
 
 const FileMenu = ({ file }: { file: File }) => {
@@ -14,6 +15,7 @@ const FileMenu = ({ file }: { file: File }) => {
     const [deleteOpen, setDeleteOpen] = useState(false)
     const [infoOpen, setInfoOpen] = useState(false)
     const [detailsOpen, setDetailsOpen] = useState(false)
+    const revalidator = useRevalidator()
     return (
         <>
             <DropdownMenu>
@@ -92,7 +94,7 @@ const FileMenu = ({ file }: { file: File }) => {
             open={detailsOpen}
             onOpenChange={setDetailsOpen}
             file={file}
-
+             onSuccess={() => revalidator.revalidate()}
              />
         </>
     )
