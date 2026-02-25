@@ -1,26 +1,38 @@
-import type { LoaderFunction } from "react-router"
-import { getCurrentUserFolder } from "@/lib/appwrite"
+import type { VercelRequest, VercelResponse } from "@vercel/node"
+import ImageKit from "imagekit"
 
-export const driveFolderLoader: LoaderFunction = async ({ params }) => {
-  const folderName = params.folderName
-  if (!folderName) throw new Error("Folder name required")
+const imagekit = new ImageKit({
+  publicKey: process.env.IMAGEKIT_PUBLIC_KEY!,
+  privateKey: process.env.IMAGEKIT_PRIVATE_KEY!,
+  urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT!,
+})
 
-  const userFolder = await getCurrentUserFolder()
-  if (!userFolder) {
-    throw new Error("Unauthorized")
+export default async function handler(
+  req: VercelRequest,
+  res: VercelResponse
+) {
+  if (req.method !== "GET") {
+    return res.status(405).json({ error: "Method not allowed" })
   }
 
-  const fullPath = `${userFolder}/${folderName}`
-
-  const res = await fetch(
-    `/api/folder/list?path=${encodeURIComponent(fullPath)}`
-  )
-
-  if (!res.ok) {
-    const err = await res.text()
-    console.error(err)
-    throw new Error("Failed to load folder")
+  const folderPath = req.query.path as string
+  if (!folderPath) {
+    return res.status(400).json({ error: "path is required" })
   }
 
-  return res.json()
+  if (folderPath.includes("..")) {
+    return res.status(400).json({ error: "Invalid path" })
+  }
+
+  try {
+    const files = await imagekit.listFiles({
+      path: `/${folderPath}`,
+      limit: 100,
+    })
+
+    return res.status(200).json(files)
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ error: "Failed to list files" })
+  }
 }
