@@ -64,7 +64,10 @@ export default async function handler(
         }
       )
 
-      return res.status(200).json(response.data)
+      return res.status(200).json({
+        ok: true,
+        data: response.data,
+      })
     }
 
     // DELETE FILE
@@ -81,7 +84,10 @@ export default async function handler(
         },
       })
 
-      return res.status(200).json(response.data)
+      return res.status(200).json({
+        ok: true,
+        data: response.data,
+      })
     }
 
     // LIST FILES
@@ -99,12 +105,16 @@ export default async function handler(
         },
       })
 
-      return res.status(200).json(response.data)
+      return res.status(200).json({
+        ok: true,
+        data: response.data,
+      })
     }
 
     return res.status(405).json({ error: "Invalid route" })
   } catch (error: any) {
     return res.status(500).json({
+      ok: false,
       error: error?.response?.data || error.message,
     })
   }

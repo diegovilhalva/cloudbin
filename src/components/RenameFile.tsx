@@ -27,11 +27,11 @@ const RenameFile = ({open,onOpenChange,fileName,filePath,onSuccess}:Props) => {
         if (!fetcher.data) return
 
         if (fetcher.data.ok) {
-            toast.success("File rename succesfully")
+            toast.success("File renamed succesfully")
             onSuccess?.()
             onOpenChange(false)
         }else{
-            toast.error(fetcher.data.error ?? "Failed torename file.")
+            toast.error(fetcher.data.error ?? "Failed to rename file.")
         }
     },[onOpenChange,onSuccess,fetcher.data])
 
