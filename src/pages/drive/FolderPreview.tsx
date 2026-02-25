@@ -5,7 +5,7 @@ import { useLoaderData } from 'react-router'
 
 const FolderPreview = () => {
   const  files  = useLoaderData()
-  
+  console.log(files)
   return (
     <>
             <h1 className="text-2xl font-medium">My</h1>
