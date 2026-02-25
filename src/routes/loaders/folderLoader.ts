@@ -14,7 +14,7 @@ export const driveFolderLoader: LoaderFunction = async ({ params }) => {
   if (!folderName) throw new Error("Folder name required")
 
   const res = await fetch(
-    `/api/folder/list?derncodeURIComponent(folderName)}`,
+    `/api/folder/list?path=${encodeURIComponent(folderName)}`,
     {
       headers: {
         "x-user-id": localStorage.getItem("userId") ?? "",
