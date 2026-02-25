@@ -32,6 +32,7 @@ const UploadFile = ({ open, onOpenChange }: Props) => {
             const response = await functions.createExecution({
                 functionId: import.meta.env.VITE_APPWRITE_FN_ID,
                 xpath: "/auth",
+                async:false
             })
 
             if (response.responseStatusCode !== 200) {
