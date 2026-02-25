@@ -10,5 +10,11 @@ export const listFiles = async (params: {
   const text = await response.text()
   if (!text) return []
 
-  return JSON.parse(text)
+  const json = JSON.parse(text)
+
+  if (!json.ok) {
+    throw new Error(json.error || "Failed to list files")
+  }
+
+  return json.data
 }
