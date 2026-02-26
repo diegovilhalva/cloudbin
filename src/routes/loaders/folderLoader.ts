@@ -1,20 +1,19 @@
 
 import type { LoaderFunction } from "react-router"
-
 export const driveFolderLoader: LoaderFunction = async ({ params }) => {
   const folderName = params.folderName
   if (!folderName) throw new Error("Folder name required")
 
+  const userId = window.__USER_ID__ // ou context/store
+  if (!userId) throw new Error("Unauthorized")
+
   const res = await fetch(
-    `/api/folder/list?folder=${encodeURIComponent(folderName)}`,
-    {
-      credentials: "include", 
-    }
+    `/api/folder/list?path=${encodeURIComponent(`${userId}/${folderName}`)}`
   )
 
   if (!res.ok) {
-    const text = await res.text()
-    console.error(text)
+    const t = await res.text()
+    console.error(t)
     throw new Error("Failed to load folder")
   }
 
