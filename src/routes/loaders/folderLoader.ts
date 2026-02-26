@@ -1,10 +1,12 @@
 
+import { getCurrentUserFolder } from "@/lib/appwrite"
 import type { LoaderFunction } from "react-router"
 export const driveFolderLoader: LoaderFunction = async ({ params }) => {
   const folderName = params.folderName
   if (!folderName) throw new Error("Folder name required")
 
-  const userId = window.__USER_ID__ // ou context/store
+  const userId = await getCurrentUserFolder()
+   
   if (!userId) throw new Error("Unauthorized")
 
   const res = await fetch(
