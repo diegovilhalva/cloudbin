@@ -1,5 +1,6 @@
 import FileCard from "@/components/FileCard"
 import FolderCard from "@/components/FolderCard"
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import type { File, FolderCardType } from "@/types/all-types"
 import { ChevronDownIcon } from "lucide-react"
@@ -12,6 +13,28 @@ const Home = () => {
 
   return (
     <>
+        <Breadcrumb className="mb-2">
+                <BreadcrumbList>
+                    <BreadcrumbItem>
+                        <BreadcrumbLink href="/drive">
+                            Drive
+                        </BreadcrumbLink>
+                    </BreadcrumbItem>
+
+
+                    <BreadcrumbItem>
+                        <BreadcrumbSeparator />
+                        <BreadcrumbLink
+                            href={`/drive/home`}
+                            className="capitalize"
+                        >
+                           Home
+                        </BreadcrumbLink>
+                    </BreadcrumbItem>
+
+
+                </BreadcrumbList>
+            </Breadcrumb>
       <h1 className="text-2xl font-medium">
         Welcome to Cloudbin
       </h1>
