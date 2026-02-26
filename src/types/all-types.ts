@@ -29,6 +29,7 @@ type FilePreviewType = {
   file: File;
   isVideo: boolean;
   isImage: boolean;
+  isPdf: boolean;
   thumbnail: string;
   transformQuery: string;
   loading: boolean;

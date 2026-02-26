@@ -10,6 +10,7 @@ import FileInfo from "./FileInfo"
 const FileDetails = ({ open, onOpenChange, file }: FileDetailsType) => {
     const isVideo = file.mime.startsWith("video/")
     const isImage = file.mime.startsWith("image/")
+    const isPdf = file.mime === "application/pdf"
     const thumbnail = isImage ? file.url : file.thumbnail
 
     const [loading, setLoading] = useState(false)
@@ -47,7 +48,7 @@ const FileDetails = ({ open, onOpenChange, file }: FileDetailsType) => {
                     </DialogDescription>
                 </DialogHeader>
                 <div className="flex flex-col md:flex-row ">
-                    <FilePreview file={file} isVideo={isVideo} thumbnail={thumbnail} transformQuery={transformQuery} loading={loading} setLoading={setLoading} isImage={isImage} />
+                    <FilePreview file={file} isVideo={isVideo} thumbnail={thumbnail} transformQuery={transformQuery} loading={loading} setLoading={setLoading} isImage={isImage} isPdf={isPdf} />
                     <div className="w-80 border-l bg-background p-4 flex flex-col ">
                         {isImage ? (
                             <ImgPreviewSidebar

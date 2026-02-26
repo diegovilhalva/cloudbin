@@ -2,8 +2,8 @@ import type { FilePreviewType } from "@/types/all-types"
 import { Image, Video } from "@imagekit/react"
 
 
-const FilePreview = ({ file, isVideo, thumbnail, transformQuery, loading, setLoading, isImage }: FilePreviewType) => {
-  
+const FilePreview = ({ file, isVideo, thumbnail, transformQuery, loading, setLoading, isImage, isPdf }: FilePreviewType) => {
+
     return (
         <div className="flex  sm:flex-1   items-center  justify-center bg-muted rounded-lg  relative">
             {loading && (
@@ -12,7 +12,7 @@ const FilePreview = ({ file, isVideo, thumbnail, transformQuery, loading, setLoa
                 </div>
             )}
 
-            {isVideo ? (
+            {isVideo && (
                 <Video urlEndpoint={import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT} src={file.url}
                     width={800}
                     height={800}
@@ -21,8 +21,10 @@ const FilePreview = ({ file, isVideo, thumbnail, transformQuery, loading, setLoa
                     className="max-h-[90%] max-w-[95%] rounded-lg"
 
                 />
-            ) : (
-                <Image
+            )
+            }
+            {(
+                isImage && <Image
                     key={transformQuery}
                     urlEndpoint={import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT}
                     src={`${thumbnail}${isImage ? `&${transformQuery}` : ""}`}
@@ -33,8 +35,16 @@ const FilePreview = ({ file, isVideo, thumbnail, transformQuery, loading, setLoa
                     onError={() => setLoading(false)}
                 />
             )}
+            {
+                isPdf && (
+                    <iframe
+                        src={file.url}
+                        className="w-full h-[80vh] rounded-lg border"
+                    />
+                )
+            }
 
-            
+
         </div>
     )
 }
