@@ -1,12 +1,8 @@
+import { listFiles } from "@/lib/driveApi"
 import type { VercelRequest, VercelResponse } from "@vercel/node"
 
-import ImageKit from "imagekit"
 
-const imagekit = new ImageKit({
-  publicKey: process.env.IMAGEKIT_PUBLIC_KEY!,
-  privateKey: process.env.IMAGEKIT_PRIVATE_KEY!,
-  urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT!,
-})
+
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
@@ -24,11 +20,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     console.log("Listing path:", path) // aparece nos logs do Vercel
 
-    const files = await imagekit.listFiles({
+    const files = await listFiles({
       path,
-      limit: 100,
-      includeFolder: true,
-      type:"all"
     })
 
     return res.status(200).json(files)
