@@ -14,28 +14,7 @@ const Recent = () => {
     const { recentFiles } = useLoaderData()
     return (
         <>
-            <Breadcrumb className="mb-2">
-                <BreadcrumbList>
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href="/drive">
-                            Drive
-                        </BreadcrumbLink>
-                    </BreadcrumbItem>
-
-
-                    <BreadcrumbItem>
-                        <BreadcrumbSeparator />
-                        <BreadcrumbLink
-                            href={`/drive/my-drive`}
-                            className="capitalize"
-                        >
-                            My Drive
-                        </BreadcrumbLink>
-                    </BreadcrumbItem>
-
-
-                </BreadcrumbList>
-            </Breadcrumb>    <Breadcrumb className="mb-2">
+             <Breadcrumb className="mb-2">
                 <BreadcrumbList>
                     <BreadcrumbItem>
                         <BreadcrumbLink href="/drive">
