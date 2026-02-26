@@ -12,10 +12,3 @@ interface UserContextType  {
   userId: string | null
 }
 
-export {}
-
-declare global {
-  interface Window {
-    __USER_ID__?: string
-  }
-}
