@@ -39,7 +39,7 @@ export default async function handler(
         }
       )
 
-      return res.status(200).json(response.data)
+      return res.status(200).json({ ok: true, data: response.data })
     }
 
     // RENAME FILE
