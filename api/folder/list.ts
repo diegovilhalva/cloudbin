@@ -1,4 +1,4 @@
-import { listFiles } from "@/lib/driveApi"
+import { listFiles } from "../../src/lib/driveApi"
 import type { VercelRequest, VercelResponse } from "@vercel/node"
 
 
