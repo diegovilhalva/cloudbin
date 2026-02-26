@@ -13,19 +13,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(405).json({ error: "Method not allowed" })
     }
 
-    const path = req.query.path as string
-    if (!path || path.includes("..")) {
+    const rawPath = req.query.path as string
+    if (!rawPath || rawPath.includes("..")) {
       return res.status(400).json({ error: "Invalid path" })
     }
 
+    // Garante que começa com / e não tem // duplos
+    const path = "/" + rawPath.replace(/^\/+/, "").replace(/\/+/g, "/")
+
+    console.log("Listing path:", path) // aparece nos logs do Vercel
+
     const files = await imagekit.listFiles({
-      path: `/${path}`,
+      path,
       limit: 100,
+      includeFolder: true,
     })
 
     return res.status(200).json(files)
-  } catch (err) {
-    console.error("IMAGEKIT LIST ERROR:", err)
-    return res.status(500).json({ error: "Failed to list files" })
+  } catch (err: any) {
+    console.error("IMAGEKIT LIST ERROR:", JSON.stringify(err))
+    return res.status(500).json({
+      error: "Failed to list files",
+      detail: err?.message ?? String(err),
+    })
   }
 }
