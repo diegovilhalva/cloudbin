@@ -10,7 +10,7 @@ export const driveFolderLoader: LoaderFunction = async ({ params }) => {
   if (!userId) throw new Error("Unauthorized")
 
   const res = await fetch(
-    `/api/folder/list?path=${encodeURIComponent(`${userId}/${folderName}`)}`
+     `/api/folder/list?path=${userId}/${folderName}`
   )
 
   if (!res.ok) {

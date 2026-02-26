@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node"
+
 import ImageKit from "imagekit"
 
 const imagekit = new ImageKit({
@@ -27,6 +28,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       path,
       limit: 100,
       includeFolder: true,
+      type:"all"
     })
 
     return res.status(200).json(files)
