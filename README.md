@@ -17,7 +17,7 @@ It allows users to upload, organize, preview, and manage files with a fast and c
 - 📄 PDF preview (with automatic thumbnails)
 - 🧾 File details modal
 - ⚡ Fast uploads using ImageKit
-- - 🧠 Optimized API (Appwrite used only for auth & backend logic)
+- 🧠 Optimized API (Appwrite used only for auth & backend logic)
 - 📱 Responsive layout
 - 🎨 UI built with shadcn/ui + Tailwind CSS
 
