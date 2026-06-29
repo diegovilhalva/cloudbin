@@ -26,7 +26,9 @@ export const router = createBrowserRouter([
     {
         path: "/",
         loader: () => redirect("/drive/home"),
-        ErrorBoundary: RootError
+        ErrorBoundary: RootError,
+        element: null,              
+        HydrateFallback: () => null
     },
     {
         path: "/auth",
